@@ -1,0 +1,13 @@
+version: "2"
+
+services:
+    main:
+        network_mode: host
+        build: ./docker/main
+        container_name: electrones6 
+        volumes:
+            - ./:/source
+            - $HOME/.Xauthority:/root/.Xauthority
+        environment:
+            - DISPLAY=$DISPLAY
+
