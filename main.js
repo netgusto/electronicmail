@@ -43,3 +43,24 @@ app.on('activate', () => {
         createWindow();
     }
 });
+
+var ImapClient = require('emailjs-imap-client')
+var client = new ImapClient('mail.netgusto.com', 993, {
+    auth: {
+        user: 'contact@netgusto.com',
+        pass: 'bGEqNy3TDpMPJxkvJscyooQPWosgnNjY9QPexVDa'
+    },
+    requireTLS: true
+});
+
+client.connect().then(() => {
+    client.listMailboxes()
+        .then(mailboxes => console.log(mailboxes))
+        .then(() => client.close())
+        .then(() => console.log("logged out"))
+});
+
+
+
+console.log('yoooo');
+
