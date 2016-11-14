@@ -44,6 +44,8 @@ app.on('activate', () => {
     }
 });
 
+
+let mailboxes = {};
 var ImapClient = require('emailjs-imap-client')
 var client = new ImapClient('mail.netgusto.com', 993, {
     auth: {
@@ -55,12 +57,20 @@ var client = new ImapClient('mail.netgusto.com', 993, {
 
 client.connect().then(() => {
     client.listMailboxes()
-        .then(mailboxes => console.log(mailboxes))
-        .then(() => client.close())
-        .then(() => console.log("logged out"))
+    .then(_mailboxes => mailboxes = _mailboxes)
+    .then(() => client.close())
+    .then(() => console.log("logged out"))
 });
 
+// In main process.
+const { ipcMain } = require('electron');
 
+ipcMain.on('asynchronous-message', (event, arg) => {
+    console.log(arg);  // prints "ping"
+    event.sender.send('asynchronous-reply', mailboxes);
+});
 
-console.log('yoooo');
-
+ipcMain.on('synchronous-message', (event, arg) => {
+    console.log(arg)  // prints "ping"
+    event.returnValue = 'pong'
+});
