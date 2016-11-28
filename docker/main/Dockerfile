@@ -8,5 +8,4 @@ RUN apt-get install -y x11-apps
 WORKDIR /source
 
 #CMD ["xeyes"]
-CMD ["npm", "start"]
-
+CMD ["npm", "run", "dev"]
